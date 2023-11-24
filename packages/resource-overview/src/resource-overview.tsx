@@ -4,11 +4,13 @@ import { Banner, Icon } from '@openstad-headless/ui/src';
 import DataStore from '@openstad-headless/data-store/src';
 import { Spacer } from '@openstad-headless/ui/src';
 import { Image } from '@openstad-headless/ui/src';
-import { BaseConfig } from '../../generic-widget-types';
+import { BaseProps } from '../../types/base-props';
 import { Filters } from './filters/filters';
 
 type Props = {
+  className?: string;
   renderHeader?: (resources?: Array<any>) => React.JSX.Element;
+  renderFooter?: (resources?: Array<any>) => React.JSX.Element;
   renderItem?: (resource: any) => React.JSX.Element;
   allowFiltering?: boolean;
   tagTypes?: Array<{
@@ -16,7 +18,7 @@ type Props = {
     placeholder: string;
     multiple?: boolean;
   }>;
-} & BaseConfig;
+} & BaseProps;
 
 //Temp: Header can only be made when the map works so for now a banner
 // If you dont want a banner pas <></> into the renderHeader prop
@@ -29,6 +31,7 @@ const defaultHeaderRenderer = (resources?: any) => {
       <section className="osc-resource-overview-title-container">
         <Spacer size={2} />
         <h4>Plannen</h4>
+        <Spacer size={2} />
       </section>
     </>
   );
@@ -65,20 +68,19 @@ const defaultItemRenderer = (resource: any) => {
 };
 
 function ResourceOverview({
+  className,
   renderHeader = defaultHeaderRenderer,
+  renderFooter,
   renderItem = defaultItemRenderer,
   allowFiltering = true,
   tagTypes = [],
   ...props
 }: Props) {
-  const datastore = new DataStore(props);
+  const datastore = new DataStore({ config: props });
   const [ideas] = datastore.useIdeas({ ...props });
-
   return (
-    <div className="osc">
-      {renderHeader()}
-
-      <Spacer size={2} />
+    <div className={`osc ${className}`}>
+      {renderHeader ? <>{renderHeader(ideas)}</> : null}
 
       <section
         className={`osc-resource-overview-content ${
@@ -87,7 +89,6 @@ function ResourceOverview({
         {allowFiltering && datastore ? (
           <Filters
             projectId={props.projectId}
-            config={props.config}
             dataStore={datastore}
             ideas={ideas}
             onUpdateFilter={ideas.filter}
@@ -106,6 +107,7 @@ function ResourceOverview({
             })}
         </section>
       </section>
+      {renderFooter ? <>{renderFooter(ideas)}</> : null}
     </div>
   );
 }

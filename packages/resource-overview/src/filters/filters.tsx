@@ -6,7 +6,7 @@ import {
 } from '@openstad-headless/ui/src';
 import React, { useState, useEffect, useRef, createRef } from 'react';
 import DataStore from '../../../components/src/data-store';
-import { BaseConfig } from '../../../generic-widget-types';
+import { BaseProps } from '../../../types/base-props';
 import { useDebounce } from 'rooks';
 import { MultiSelectTagFilter } from './multiselect-tag-filter';
 import { SelectTagFilter } from './select-tag-filter';
@@ -25,7 +25,7 @@ type Props = {
   dataStore: DataStore;
   tagTypes?: Array<{ type: string; placeholder?: string; multiple?: boolean }>;
   onUpdateFilter?: (filter: Filter) => void;
-} & BaseConfig;
+} & BaseProps;
 
 export function Filters({
   ideas,

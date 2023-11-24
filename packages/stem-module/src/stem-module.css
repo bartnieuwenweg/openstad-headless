@@ -1,0 +1,16 @@
+.stem-module-resource-container {
+    background-color: var(--osc-border);
+}
+
+.stem-module-stepper {
+    background-color: var(--osc-card);
+    padding: 1rem 1rem;
+}
+
+.osc-image-resizer {
+    width: 17rem;
+}
+
+p.stem-module-resource-container-intro {
+    margin: 0;
+}

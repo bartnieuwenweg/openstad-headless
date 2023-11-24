@@ -12,13 +12,18 @@
     background-color: var(--osc-secondary);
 }
 
+.osc button.plain {
+    background-color: white;
+    color: var(--osc-foreground);
+}
+
 .osc button.ghost {
     padding: 0;
     display: inline-flex;
     align-items: center;
     gap: .5rem;
     border: none;
-    background-color: var(--osc-background);
+    background-color: transparent;
     color: var(--osc-foreground)
 }
 
@@ -28,10 +33,15 @@
 
 .osc button:hover {
     background-color: var(--osc-primary-hover);
+    cursor: pointer;
 }
 
 .osc button.secondary:hover {
     background-color: var(--osc-secondary-hover);
+}
+
+.osc button.plain:hover {
+    background-color: var(--osc-ternary-hover);
 }
 
 .osc button.ghost:hover {

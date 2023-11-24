@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import ResourceOverview from './resource-overview.js';
-
+import { StemModule } from './stem-module';
 const config = {
   api: {
     url: import.meta.env.VITE_API_URL,
@@ -17,18 +16,6 @@ const config = {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ResourceOverview
-      // allowFiltering={false}
-      tagTypes={[
-        {
-          type: 'theme',
-          placeholder: 'Selecteer een thema',
-          multiple: true,
-        },
-        { type: 'area', placeholder: 'Selecteer een gebied' },
-        { type: 'tag', placeholder: 'Selecteer een tag' },
-      ]}
-      {...config}
-    />
+    <StemModule site="http://openstad.org" {...config} />
   </React.StrictMode>
 );
