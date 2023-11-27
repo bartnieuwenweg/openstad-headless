@@ -43,6 +43,10 @@
     border-color: var(--osc-primary);
 }
 
+.step-container.done {
+    color: var(--osc-primary);
+}
+
 .step-icon.active > p, .step-icon.done  > p{
     color: var(--osc-secondary-foreground);
 }

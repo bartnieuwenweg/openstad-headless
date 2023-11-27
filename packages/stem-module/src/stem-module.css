@@ -1,9 +1,17 @@
 .stem-module-resource-container {
-    background-color: var(--osc-border);
+    background-color: #F0F4F8;
+    padding: 2rem;
+}
+
+.stem-module-resource-footer {
+    background-color: #F0F4F8;
+    padding: 1rem;
+    display: flex;
+    justify-content: end;
 }
 
 .stem-module-stepper {
-    background-color: var(--osc-card);
+    background-color: #F8FAFC;
     padding: 1rem 1rem;
 }
 
@@ -13,4 +21,25 @@
 
 p.stem-module-resource-container-intro {
     margin: 0;
+}
+
+.stem-module-send-button {
+    margin-left: 1.3rem;
+}
+
+.confirm-icon {    
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: .5rem;
+    height: .5rem;
+    padding: .5rem;
+    margin-right: .5rem;
+    background-color: var(--osc-primary);
+    border-color: #12B8867A;
+    border-radius: 50%;
+}
+
+.confirm-icon > p {
+    color: var(--osc-secondary-foreground);
 }
