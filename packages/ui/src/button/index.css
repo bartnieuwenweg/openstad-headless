@@ -15,7 +15,8 @@
 .osc button.plain {
     background-color: white;
     color: var(--osc-foreground);
-    border: solid .5px;
+    border: solid 1px;
+    border-color: #DBDFE5;
 }
 
 .osc button.ghost {

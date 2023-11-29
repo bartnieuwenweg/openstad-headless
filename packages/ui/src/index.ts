@@ -11,3 +11,4 @@ export { Select } from './select';
 export { MultiSelect } from './multiselect';
 export { Stepper } from './stepper';
 export { Slider } from './slider'
+export { Textarea } from './textarea'

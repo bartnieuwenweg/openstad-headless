@@ -4,7 +4,9 @@ import { BaseProps } from '../../types/base-props';
 import {
   Input,
   SecondaryButton,
+  Slider,
   Spacer,
+  Textarea
 } from '@openstad-headless/ui/src';
 import './choice-guide.css';
 import { PlainButton } from '@openstad-headless/ui/src/button';
@@ -51,7 +53,7 @@ export function ChoiceGuide(
           <div>
             <>
               <h5>Wat is belangrijk voor de herinrichting van jouw straat?</h5>
-              <p className="choice-guide-resource-container-intro">
+              <p>
                 Bij de herinrichting van de Schoolstraat is er niet genoeg ruimte om
                 alles in te passen. We willen graag jouw voorkeuren weten om een beter
                 ontwerp te kunnen maken.
@@ -67,6 +69,7 @@ export function ChoiceGuide(
                   <p className="choice-guide-text">{choice.optie1Beschrijving}</p>
                   <h6>B. {choice.optie2}</h6>
                   <p className="choice-guide-text">{choice.optie2Beschrijving}</p>
+                  <Slider/>
                 </div>
               ))}
             </div>
@@ -81,6 +84,11 @@ export function ChoiceGuide(
 
         {currentStep === 1 ? (
           <>
+            <h5>Jouw resultaten</h5>
+              <p>
+                Bedankt voor het invullen!
+              </p>
+              <Spacer size={2}/>
             <section className="choice-guide-resource-container">
               <h5>Gegevens</h5>
               <p>
@@ -90,14 +98,14 @@ export function ChoiceGuide(
               </p>
               <h6>Postcode</h6>
               <p>Vul hier uw postcode in</p>
-              <Input/>
+              <Input className="choice-guide-input-zipcode"/>
               <Spacer size={1}/>
               <h6>Overige feedback</h6>
               <p>
                 Heeft u opmerkingen over de thema's of de vragenlijst? Dan kunt u
-                die hier kwijt.
+                die hier kwijt. (Optioneel!)
               </p>
-              <Input/>
+              <Textarea className='choice-guide-input-feedback'/>
             </section>
             <section className="choice-guide-resource-container">
               <h5>Email-verificatie</h5>

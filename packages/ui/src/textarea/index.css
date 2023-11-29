@@ -1,0 +1,40 @@
+.osc textarea {
+    width: 100%;
+    margin :0;
+    color: var(--osc-muted);
+    border: 1px solid var(--osc-border);
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.osc input::placeholder {
+    color: var(--osc-muted);
+    opacity: 1; /* Firefox */
+  }
+  
+.osc input::-ms-input-placeholder { /* Edge 12 -18 */
+  color: var(--osc-muted);
+}
+
+.osc input:focus {
+  outline-color: var(--osc-secondary);
+}
+
+.osc input.alert {
+  outline-color: var(--osc-destructive);
+  border: 1px solid var(--osc-destructive);
+}
+
+.osc input:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.osc p.input-label {
+  margin: .5rem 0rem;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 19px;
+  letter-spacing: 0px;
+  color: var(--osc-foreground);
+}

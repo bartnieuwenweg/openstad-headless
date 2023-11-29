@@ -18,6 +18,14 @@
     margin-left: 0.5rem;
 }
 
+.choice-guide-input-zipcode {
+    height: 2.5rem;
+}
+
+.choice-guide-input-feedback {
+    height: 5rem;
+}
+
 .confirm-icon {    
     display: inline-flex;
     justify-content: center;
