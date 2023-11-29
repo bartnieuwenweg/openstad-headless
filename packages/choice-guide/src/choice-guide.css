@@ -1,0 +1,36 @@
+.choice-guide-resource-container {
+    background-color: #F0F4F8;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.choice-guide-resource-footer {
+    padding: 1rem;
+    display: flex;
+    justify-content: end;
+}
+
+.choice-guide-send-button {
+    margin-left: 1rem;
+}
+
+.choice-guide-text {
+    margin-left: 0.5rem;
+}
+
+.confirm-icon {    
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: .5rem;
+    height: .5rem;
+    padding: .5rem;
+    margin-right: .5rem;
+    background-color: var(--osc-primary);
+    border-color: #12B8867A;
+    border-radius: 50%;
+}
+
+.confirm-icon > p {
+    color: var(--osc-secondary-foreground);
+}

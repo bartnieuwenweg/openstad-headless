@@ -1,0 +1,86 @@
+.osc-slider{
+    position: relative;
+    height: 44px;
+    cursor: pointer;
+}
+
+.osc-slider-input-range {
+    position: absolute;
+    height: 44px;
+    margin: 0;
+}
+
+.osc-slider-track-container {
+    position: absolute;
+    height: 42px;
+    left: 0;
+    right: 0;
+}
+
+.osc-slider-track-container > div {
+    position: absolute;
+}
+
+.osc-slider-track-dot-start {
+    width: 22px;
+    height: 22px;
+    background-color: #004699;
+    border-radius: 11px;
+}
+
+.osc-slider-track-dot-end {
+    width: 22px;
+    height: 22px;
+    background-color: white;
+    border: solid 2px #004699;
+    border-radius: 11px;
+    box-sizing: border-box;
+}
+
+.osc-slider-track-dot-center {
+    margin: 11px auto 11px auto;
+    left: 0;
+    right: 0;
+}
+
+.osc-slider-track-dot-left {
+    margin: 11px 0 11px 11px;
+    left: 0;
+}
+
+.osc-slider-track-dot-right {
+    margin: 11px 11px 11px 0;
+    right: 0;
+}
+
+.osc-slider-track {
+    height: 2px;
+    left: 22px;
+    right: 22px;
+    background-color: #004699;
+    margin: 21px 0 21px 0;
+}
+
+.osc-slider-track-progress-container {
+    left: 22px;
+    right: 22px;
+    bottom: 0;
+    top: 0;
+}
+
+.osc-slider-track-progress {
+    height: 10px;
+    width: 50%;
+    background-color: #004699;
+    margin: 17px 0 17px 0;
+    left: 50%;
+    position: absolute;
+    transform-origin: left;
+}
+
+.osc-slider-input-range {
+    height: 48px;
+    padding: 0;
+    top: -3px;
+}
+

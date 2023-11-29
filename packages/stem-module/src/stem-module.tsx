@@ -4,7 +4,6 @@ import React from 'react';
 import ResourceOverview from '../../resource-overview/src/resource-overview';
 import { BaseProps } from '../../types/base-props';
 import {
-  GhostButton,
   Image,
   SecondaryButton,
   Spacer,
@@ -132,7 +131,7 @@ export function StemModule(
               <Spacer size={1} />
             </section>
             <div className="stem-module-resource-footer">
-            <SecondaryButton
+              <SecondaryButton
                 onClick={() => (window.location.href = props.site)}>
                 Klaar
               </SecondaryButton>
