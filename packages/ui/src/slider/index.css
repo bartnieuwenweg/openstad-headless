@@ -1,4 +1,4 @@
-.osc-slider{
+.osc-slider {
     position: relative;
     height: 44px;
     cursor: pointer;
@@ -21,22 +21,6 @@
     position: absolute;
 }
 
-.osc-slider-track-dot-start {
-    width: 22px;
-    height: 22px;
-    background-color: #004699;
-    border-radius: 11px;
-}
-
-.osc-slider-track-dot-end {
-    width: 22px;
-    height: 22px;
-    background-color: white;
-    border: solid 2px #004699;
-    border-radius: 11px;
-    box-sizing: border-box;
-}
-
 .osc-slider-track-dot-center {
     margin: 11px auto 11px auto;
     left: 0;
@@ -54,10 +38,10 @@
 }
 
 .osc-slider-track {
-    height: 2px;
+    height: 0.5px;
     left: 22px;
     right: 22px;
-    background-color: #004699;
+    background-color: #1471EF;
     margin: 21px 0 21px 0;
 }
 
@@ -69,18 +53,12 @@
 }
 
 .osc-slider-track-progress {
-    height: 10px;
+    height: 5px;
     width: 50%;
-    background-color: #004699;
-    margin: 17px 0 17px 0;
+    background-color: #1471EF;
+    margin: 20px 0 20px 0;
     left: 50%;
     position: absolute;
     transform-origin: left;
-}
-
-.osc-slider-input-range {
-    height: 48px;
-    padding: 0;
-    top: -3px;
 }
 
