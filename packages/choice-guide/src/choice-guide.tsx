@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import loadWidget from '../../lib/load-widget';
 
 import { BaseProps } from '../../types/base-props';
 import {
@@ -11,7 +12,16 @@ import {
 import './choice-guide.css';
 import { PlainButton } from '@openstad-headless/ui/src/button';
 
-export function ChoiceGuide(
+export type ChoiceGuideWidgetProps = BaseProps &
+ChoiceGuideProps & {
+  resourceId?: string;
+}
+
+export type ChoiceGuideProps = {
+  title?: string;
+}
+
+function ChoiceGuide(
   props: BaseProps & {
     site: string;
   }
@@ -160,3 +170,7 @@ export function ChoiceGuide(
     </>
   );
 }
+
+ChoiceGuide.loadWidget = loadWidget;
+
+export { ChoiceGuide };
