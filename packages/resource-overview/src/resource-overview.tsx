@@ -76,11 +76,12 @@ function ResourceOverview({
   tagTypes = [],
   ...props
 }: Props) {
-  const datastore = new DataStore({ config: props });
-  const [ideas] = datastore.useIdeas({ ...props });
+  const datastore = new DataStore(props);
+  const [resources] = datastore.useResources({ ...props });
+
   return (
     <div className={`osc ${className}`}>
-      {renderHeader ? <>{renderHeader(ideas)}</> : null}
+      {renderHeader ? <>{renderHeader(resources)}</> : null}
 
       <section
         className={`osc-resource-overview-content ${
@@ -90,15 +91,15 @@ function ResourceOverview({
           <Filters
             projectId={props.projectId}
             dataStore={datastore}
-            ideas={ideas}
-            onUpdateFilter={ideas.filter}
+            resources={resources}
+            onUpdateFilter={resources.filter}
             tagTypes={tagTypes}
           />
         ) : null}
 
         <section className="osc-resource-overview-resource-collection">
-          {ideas &&
-            ideas.map((resource: any) => {
+          {resources &&
+            resources.map((resource: any) => {
               return (
                 <React.Fragment key={`resource-item-${resource.title}`}>
                   {renderItem(resource)}
@@ -107,7 +108,7 @@ function ResourceOverview({
             })}
         </section>
       </section>
-      {renderFooter ? <>{renderFooter(ideas)}</> : null}
+      {renderFooter ? <>{renderFooter(resources)}</> : null}
     </div>
   );
 }

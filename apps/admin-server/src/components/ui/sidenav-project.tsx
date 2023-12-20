@@ -60,14 +60,14 @@ export function SidenavProject({ className }: { className?: string }) {
                 <span className="truncate">Algemeen</span>
               </Button>
             </Link>
-            <Link href={`/projects/${project}/settings/ideas`}>
+            <Link href={`/projects/${project}/settings/resources`}>
               <Button
                 variant={
-                  location.includes('/settings/ideas') ? 'secondary' : 'ghost'
+                  location.includes('/settings/resources') ? 'secondary' : 'ghost'
                 }
                 size="default"
                 className="w-full flex justify-start pl-8">
-                <span className="truncate">Ideeën</span>
+                <span className="truncate">Resources</span>
               </Button>
             </Link>
             <Link href={`/projects/${project}/settings/voting`}>
@@ -112,6 +112,18 @@ export function SidenavProject({ className }: { className?: string }) {
                 size="default"
                 className="w-full flex justify-start pl-8">
                 <span className="truncate">Administrator notificaties</span>
+              </Button>
+            </Link>
+            <Link href={`/projects/${project}/settings/resource`}>
+              <Button
+                variant={
+                  location.includes('/settings/resource')
+                    ? 'secondary'
+                    : 'ghost'
+                }
+                size="default"
+                className="w-full flex justify-start pl-8">
+                <span className="truncate">Resource instellingen</span>
               </Button>
             </Link>
           </>
@@ -191,12 +203,12 @@ export function SidenavProject({ className }: { className?: string }) {
             </Link>
           </>
         ) : null}
-        <Link href={`/projects/${project}/ideas`}>
+        <Link href={`/projects/${project}/resources`}>
           <Button
-            variant={location.includes('/ideas') ? 'secondary' : 'ghost'}
+            variant={location.includes('/resources') ? 'secondary' : 'ghost'}
             className="w-full flex justify-start"
             onClick={(e) => {}}>
-            <span className="truncate">Ideeën</span>
+            <span className="truncate">Resources</span>
           </Button>
         </Link>
         <Link href={`/projects/${project}/codes`}>

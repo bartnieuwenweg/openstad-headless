@@ -37,12 +37,16 @@ docker-compose up --build
 
 You now have four servers, running on localhost:31410, 31430, 31450 and 31470. These urls should work:
 
-[http://localhost:31410/api/project/1/idea](http://localhost:31410/api/project/1/idea)  
+[http://localhost:31410/api/project/1/resource](http://localhost:31410/api/project/1/resource)  
 [http://localhost:31430/auth/code/login?clientId=uniquecode](http://localhost:31430/auth/code/login?clientId=uniquecode)  
 [http://localhost:31450/image/forum.romanum.06.webp](http://localhost:31450/image/forum.romanum.06.webp)  
 [http://localhost:31470](http://localhost:31470)
 
 You are now done. Everything below this line is extra information for the incurably curious.
+
+### important notes for the admin server > widget management pages
+Each widget management page shows a preview of how the widget will look given a set of configurations.
+To make this work however, one must first use the command "npm run build" in the specific widget (in the packages > [widget] folder). This is only neccesary in development. In production these widgets are already prebuild.
 
 ### Code
 
@@ -101,7 +105,6 @@ DB_USERNAME=
 DB_PASSWORD=
 API_DB_NAME=
 AUTH_DB_NAME=
-IMAGE_DB_NAME=
 ```
 
 ### If everything else fails
