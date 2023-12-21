@@ -85,8 +85,6 @@ router
         req.widgetConfig
       );
 
-      console.log(output)
-
       res.header('Content-Type', 'application/javascript');
       res.send(output);
     } catch (e) {

@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState } from 'react';
 import loadWidget from '../../lib/load-widget';
 
@@ -11,9 +12,12 @@ import {
 } from '@openstad-headless/ui/src';
 import './choice-guide.css';
 import { PlainButton } from '@openstad-headless/ui/src/button';
+import { ProjectSettingProps } from '../../types/project-setting-props';
+import SliderForm from './parts/slider-form';
 
 export type ChoiceGuideWidgetProps = BaseProps &
-ChoiceGuideProps & {
+ChoiceGuideProps &
+ProjectSettingProps & {
   resourceId?: string;
 }
 
@@ -71,16 +75,8 @@ function ChoiceGuide(
               <Spacer size={2}/>
             </>
             <div>
-              {choiceGuide?.map((choice: any) => (
-                <div className="choice-guide-resource-container">
-                  <h5>{choice.vraag}</h5>
-                  <Spacer size={2}/>
-                  <h6>A. {choice.optie1}</h6>
-                  <p className="choice-guide-text">{choice.optie1Beschrijving}</p>
-                  <h6>B. {choice.optie2}</h6>
-                  <p className="choice-guide-text">{choice.optie2Beschrijving}</p>
-                  <Slider/>
-                </div>
+              {choiceGuide?.map((choice) => (
+                <SliderForm choice={choice} />
               ))}
             </div>
             <div className="choice-guide-resource-footer">

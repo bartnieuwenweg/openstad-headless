@@ -4,8 +4,8 @@ import React, { forwardRef } from 'react';
 
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   errors?: string;
-  info?: string;
   label?: string;
+  onValueChange: (value: number) => void;
 };
 
 const Slider = forwardRef<HTMLInputElement, Props>((props, ref) => {
@@ -15,6 +15,7 @@ const Slider = forwardRef<HTMLInputElement, Props>((props, ref) => {
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setValue(Number(e.currentTarget.value));
+    props.onValueChange(Number(e.currentTarget.value))
   }
 
   function calcProgress(min: number, max: number, value: number) {

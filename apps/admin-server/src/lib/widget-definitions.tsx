@@ -2,7 +2,7 @@ export const WidgetDefinitions = {
   comments: 'Argumenten',
   begrootmodule: 'Begrootmodule',
   resourcesmap: 'Resource map',
-  keuzewijzer: 'Keuzewijzer',
+  choiceguide: 'Keuzewijzer',
   likes: 'Like',
   map: 'Map',
   resourceform: 'Resource form',

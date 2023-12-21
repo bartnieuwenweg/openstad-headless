@@ -13,6 +13,7 @@ import { useWidgetConfig } from '@/hooks/use-widget-config';
 import { useWidgetPreview } from '@/hooks/useWidgetPreview';
 import { ChoiceGuideWidgetProps } from '@openstad/choice-guide/src/choice-guide'
 import WidgetPublish from '@/components/widget-publish';
+import ChoiceGuideForm from './form';
 
 export default function WidgetKeuzewijzer() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function WidgetKeuzewijzer() {
   const { data: widget, updateConfig } = useWidgetConfig();
   const { previewConfig, updatePreview } = useWidgetPreview<ChoiceGuideWidgetProps>({
     projectId,
-    resourceId: '2',
+    resourceId: '3',
     api: {
       url: '/api/openstad',
     },
@@ -55,7 +56,22 @@ export default function WidgetKeuzewijzer() {
               <TabsTrigger value="publish">Publiceren</TabsTrigger>
             </TabsList>
             <TabsContent value="display" className="p-0">
-              <ChoicesSelectorForm />
+              {widget?.config ? (
+                <ChoiceGuideForm
+                  {...widget?.config}
+                  updateConfig={(config) =>
+                    updateConfig({ ...widget.config, ...config })
+                  }
+                  onFieldChanged={(key, value) => {
+                    if (previewConfig) {
+                      updatePreview({
+                        ...previewConfig,
+                        [key]: value
+                      })
+                    }
+                  }}
+                />
+              ) : null}
             </TabsContent>
             <TabsContent value="publish" className="p-0">
               <WidgetPublish />
@@ -65,7 +81,7 @@ export default function WidgetKeuzewijzer() {
           <div className="py-6 mt-6 bg-white rounded-md">
             {previewConfig ? (
               <WidgetPreview
-                type="likes"
+                type="choiceguide"
                 config={previewConfig}
                 projectId={projectId as string}
               />

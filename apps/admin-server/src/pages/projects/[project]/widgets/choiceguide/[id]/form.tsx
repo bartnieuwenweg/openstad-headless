@@ -22,6 +22,9 @@ import * as z from 'zod';
 import { Heading } from '@/components/ui/typography';
 import { Separator } from '@/components/ui/separator';
 import { useWidgetConfig } from '@/hooks/use-widget-config';
+import { EditFieldProps } from '@/lib/EditFieldProps';
+import { ChoiceGuideProps } from '@openstad/choice-guide/src/choice-guide';
+import { useFieldDebounce } from '@/hooks/useFieldDebounce';
 
 const formSchema = z.object({
   keuzewijzer: z.string(),
@@ -34,9 +37,13 @@ const formSchema = z.object({
   urlStartPage: z.string().url(),
   urlResultPage: z.string().url(),
 });
+type FormData = z.infer<typeof formSchema>
 
-export default function ChoicesSelectorForm() {
+type Props = {}
+
+export default function ChoiceGuideForm(props: Props & EditFieldProps<ChoiceGuideProps>) {
   const category = 'selectionGuide';
+  const { onFieldChange } = useFieldDebounce(props.onFieldChanged);
 
   const {
     data: widget,

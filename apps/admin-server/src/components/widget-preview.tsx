@@ -13,7 +13,7 @@ type Props = {
     | 'begrootmodule'
     | 'resourcesmap'
     | 'map'
-    | 'choiceGuide';
+    | 'choiceguide';
   config?: any;
   projectId: string;
 };

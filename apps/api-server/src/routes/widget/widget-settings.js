@@ -38,7 +38,7 @@ module.exports = {
       resourceId: null,
     },
   },
-  comments: {
+  choiceguide: {
     js: ['@openstad-headless/choice-guide/dist/choice-guide.iife.js'],
     css: ['@openstad-headless/choice-guide/dist/style.css'],
     functionName: 'OpenstadHeadlessChoiceGuide',
