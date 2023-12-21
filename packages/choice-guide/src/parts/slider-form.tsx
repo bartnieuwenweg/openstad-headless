@@ -4,7 +4,6 @@ import '../choice-guide.css';
 
 export default function SliderForm({choice} : {choice:any}) {
   const [value, setValue] = React.useState(50)
-  console.log(choice)
   
   return (
     <div className="choice-guide-resource-container">

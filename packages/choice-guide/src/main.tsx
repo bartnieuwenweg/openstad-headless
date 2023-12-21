@@ -17,6 +17,6 @@ const config = {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ChoiceGuide site="http://openstad.org" {...config}/>
+    <ChoiceGuide {...config}/>
   </React.StrictMode>,
 )

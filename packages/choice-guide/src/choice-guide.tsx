@@ -14,6 +14,8 @@ import './choice-guide.css';
 import { PlainButton } from '@openstad-headless/ui/src/button';
 import { ProjectSettingProps } from '../../types/project-setting-props';
 import SliderForm from './parts/slider-form';
+import DataStore from '@openstad-headless/data-store/src';
+import { SessionStorage } from '@openstad-headless/lib/session-storage';
 
 export type ChoiceGuideWidgetProps = BaseProps &
 ChoiceGuideProps &
@@ -23,20 +25,30 @@ ProjectSettingProps & {
 
 export type ChoiceGuideProps = {
   title?: string;
+  choiceGuide?: string[];
 }
 
-function ChoiceGuide(
-  props: BaseProps & {
-    site: string;
-  }
-) {
-  const queryparams = window.location.search;
-  let searchParams = new URLSearchParams(queryparams);
-  const [currentStep, setCurrentStep] = useState<number>(
-    searchParams.has('confirmed') ? 3 : 0
-  );
+function ChoiceGuide({
+  ...props
+}: ChoiceGuideWidgetProps) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const resourceId = urlParams.get('openstadResourceId') || props.resourceId || 3;
+  const [currentStep, setCurrentStep] = useState<number>(0);
 
-  let choiceGuide = [
+  const datastore = new DataStore({
+    projectId: props.projectId,
+    config: { api: props.api },
+  });
+
+  const session = new SessionStorage(props);
+
+  const [currentUser] = datastore.useCurrentUser(props);
+  const [resource] = datastore.useResource({
+    projectId: props.projectId,
+    resourceId,
+  });
+
+  let choiceGuide = props?.choiceGuide || [
     {
       vraag: "1. Wat vind je belangrijker?",
       optie1: "Dat er ruimte komt voor plantenbakken in de straat.",
@@ -151,7 +163,7 @@ function ChoiceGuide(
             </section>
             <div className="choice-guide-resource-footer">
               <PlainButton
-                onClick={() => (window.location.href = props.site)}>
+                onClick={() => {}}>
                 Terug naar homepage
               </PlainButton>  
               <SecondaryButton
