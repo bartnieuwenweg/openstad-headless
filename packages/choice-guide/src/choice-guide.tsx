@@ -6,7 +6,6 @@ import { BaseProps } from '../../types/base-props';
 import {
   Input,
   SecondaryButton,
-  Slider,
   Spacer,
   Textarea
 } from '@openstad-headless/ui/src';
@@ -25,7 +24,7 @@ ProjectSettingProps & {
 
 export type ChoiceGuideProps = {
   title?: string;
-  choiceGuide?: string[];
+  choiceGuide?: object[];
 }
 
 function ChoiceGuide({
@@ -35,9 +34,9 @@ function ChoiceGuide({
   const resourceId = urlParams.get('openstadResourceId') || props.resourceId || 3;
   const [currentStep, setCurrentStep] = useState<number>(0);
 
-  const datastore = new DataStore({
+  const datastore: any = new DataStore({
     projectId: props.projectId,
-    config: { api: props.api },
+    api: props.api,
   });
 
   const session = new SessionStorage(props);
@@ -50,6 +49,7 @@ function ChoiceGuide({
 
   let choiceGuide = props?.choiceGuide || [
     {
+      type: "a-to-b",
       vraag: "1. Wat vind je belangrijker?",
       optie1: "Dat er ruimte komt voor plantenbakken in de straat.",
       optie1Beschrijving: "Het kiezen voor plantenbakken gaat ten koste van extra ruimte voor fietsparkeren of zitgelegenheid.",
@@ -57,6 +57,7 @@ function ChoiceGuide({
       optie2Beschrijving: "Als er meer fietsparkeervoorzieningen in de straat geplaatst worden, is er minder ruimte voor plantenbakken of zitgelegenheid."
     },
     {
+      type: "a-to-b",
       vraag : "2. Wat vind je belangrijker?",
       optie1 : "Ruimte voor bankjes in de straat.",
       optie1Beschrijving : "Het kiezen voor bankjes in de straat gaat ten koste van extra ruimte voor plantenbakken.",
@@ -64,6 +65,7 @@ function ChoiceGuide({
       optie2Beschrijving : "Het kiezen voor plantenbakken op de kade gaat ten koste van extra ruimte voor bankjes."
     },
     {
+      type: "a-to-b",
       vraag: "3. Wat vind je belangrijker?",
       optie1: "Dat er veel ruimte is om mijn fiets in de straat te kunnen parkeren.",
       optie1Beschrijving: "Als er meer fietsparkeervoorzieningen in de straat geplaatst worden, is minder ruimte voor zitgelegenheid in de vorm van bankjes.",

@@ -13,12 +13,18 @@ import { useWidgetConfig } from '@/hooks/use-widget-config';
 import { useWidgetPreview } from '@/hooks/useWidgetPreview';
 import { ChoiceGuideWidgetProps } from '@openstad/choice-guide/src/choice-guide'
 import WidgetPublish from '@/components/widget-publish';
+import { WithApiUrlProps, withApiUrl } from '@/lib/server-side-props-definition';
 import ChoiceGuideForm from './form';
 
-export default function WidgetKeuzewijzer() {
+export const getServerSideProps = withApiUrl
+
+
+export default function WidgetKeuzewijzer({
+  apiUrl
+}: WithApiUrlProps) {
   const router = useRouter();
   const id = router.query.id;
-  const projectId = router.query.project;
+  const projectId = router.query.project as string;
 
   const { data: widget, updateConfig } = useWidgetConfig();
   const { previewConfig, updatePreview } = useWidgetPreview<ChoiceGuideWidgetProps>({
@@ -27,8 +33,6 @@ export default function WidgetKeuzewijzer() {
     api: {
       url: '/api/openstad',
     },
-    title: 'Vind je dit een goed idee?',
-    variant: 'medium',
   });
 
   return (
@@ -59,10 +63,10 @@ export default function WidgetKeuzewijzer() {
               {widget?.config ? (
                 <ChoiceGuideForm
                   {...widget?.config}
-                  updateConfig={(config) =>
+                  updateConfig={(config: any) =>
                     updateConfig({ ...widget.config, ...config })
                   }
-                  onFieldChanged={(key, value) => {
+                  onFieldChanged={(key: any, value: any) => {
                     if (previewConfig) {
                       updatePreview({
                         ...previewConfig,
@@ -74,7 +78,7 @@ export default function WidgetKeuzewijzer() {
               ) : null}
             </TabsContent>
             <TabsContent value="publish" className="p-0">
-              <WidgetPublish />
+              <WidgetPublish apiUrl={apiUrl} />
             </TabsContent>
           </Tabs>
 

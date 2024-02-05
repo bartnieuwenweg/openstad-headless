@@ -87,8 +87,10 @@ module.exports = {
     }
   },
   choiceguide: {
-    js: ['@openstad-headless/choice-guide/dist/choice-guide.iife.js'],
-    css: ['@openstad-headless/choice-guide/dist/style.css'],
+    packageName: '@openstad-headless/choice-guide',
+    directory: 'choice-guide',
+    js: ['dist/choice-guide.iife.js'],
+    css: ['dist/style.css'],
     functionName: 'OpenstadHeadlessChoiceGuide',
     componentName: 'ChoiceGuide',
     defaultConfig: {
