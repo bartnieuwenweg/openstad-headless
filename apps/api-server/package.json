@@ -4,9 +4,9 @@
   "description": "OpenStad API server",
   "main": "server.js",
   "scripts": {
-    "start": "node migrate.js && node server.js",
+    "start": "node ./scripts/migrate-database.js && node server.js",
     "predev": "./scripts/predev.sh",
-    "dev": "nodemon server.js",
+    "dev": "node nodemon-watch-server.js",
     "lint": "node ./scripts/lint",
     "lint:bare": "npx eslint",
     "prettier": "node ./scripts/prettier",
@@ -17,7 +17,8 @@
     "test:e2e": "jest --no-cache --config jest-e2e.config.js --forceExit",
     "test:e2e:debug": "jest --no-cache --config jest-e2e.config.js --verbose --forceExit",
     "init-database": "node ./scripts/init-database.js",
-    "migrate-database": "node ./scripts/migrate-database.js"
+    "migrate-database": "node ./scripts/migrate-database.js",
+    "build-packages": "node ./scripts/build-packages.js"
   },
   "dependencies": {
     "@kubernetes/client-node": "^0.18.1",
@@ -30,6 +31,7 @@
     "cron": "^1.8.2",
     "dotenv": "^8.6.0",
     "express": "^4.17.3",
+    "folder-hash": "^4.0.4",
     "fuzzysort": "^1.2.1",
     "html-to-text": "^6.0.0",
     "http-errors": "^1.8.1",
@@ -46,15 +48,23 @@
     "mysqldump": "^3.2.0",
     "node-fetch": "^2.6.7",
     "nodemailer": "^6.7.3",
+    "nodemon": "^3.0.1",
     "nunjucks": "^3.2.3",
     "pmx": "^1.6.7",
     "sanitize-html": "^2.7.0",
     "sequelize": "^6.28.0",
     "umzug": "^3.2.1",
     "ws": "^7.5.7",
+    "@openstad-headless/ui": "file:../../packages/ui",
+    "@openstad-headless/datastore": "file:../../packages/data-store",
     "@openstad-headless/comments": "file:../../packages/comments",
     "@openstad-headless/likes": "file:../../packages/likes",
-    "@openstad-headless/choice-guide": "file:../../packages/choice-guide"
+    "@openstad-headless/choice-guide": "file:../../packages/choice-guide",
+    "@openstad-headless/raw-resource": "file:../../packages/raw-resource",
+    "@openstad-headless/resource-overview": "file:../../packages/resource-overview",
+    "@openstad-headless/date-countdown-bar": "file:../../packages/date-countdown-bar",
+    "@openstad-headless/resource-detail": "file:../../packages/resource-detail",
+    "@openstad-headless/counter": "file:../../packages/counter"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
@@ -64,7 +74,6 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-sonarjs": "^0.10.0",
     "jest": "^27.5.1",
-    "nodemon": "^3.0.1",
     "npm-commands": "^1.1.0",
     "prettier": "^2.6.2",
     "sequelize-mock": "^0.10.2",

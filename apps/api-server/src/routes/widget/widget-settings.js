@@ -1,28 +1,21 @@
 // @todo: add all widgets
 module.exports = {
-  /*arguments: {
-    js: ['@openstad-headless/arguments-component/dist/arguments-component.umd.cjs'],
-    css: ['@openstad-headless/arguments-component/dist/style.css'],
-    name: 'OpenstadHeadlessArguments',
+  agenda: {
+    packageName: '@openstad-headless/agenda',
+    directory: 'agenda',
+    js: ['dist/agenda.iife.js'],
+    css: ['dist/style.css'],
+    functionName: 'OpenstadHeadlessAgenda',
+    componentName: 'Agenda',
     defaultConfig: {
       resourceId: null,
-      title: '[[nr]] reacties voor',
-      isClosed: widget.project?.config?.arguments?.isClosed || true,
-      closedText: 'Het inzenden van reacties is niet langer mogelijk',
-      isVotingEnabled: false,
-      isReplyingEnabled: false,
-      descriptionMinLength:
-        widget.project?.config?.arguments?.descriptionMinLength || '2',
-      descriptionMaxLength:
-        widget.project?.config?.arguments?.descriptionMaxLength || '1000',
-      placeholder: 'Voer hier uw reactie in',
-      formIntro: '',
     },
-  },*/
-
+  },
   likes: {
-    js: ['@openstad-headless/likes/dist/likes.iife.js'],
-    css: ['@openstad-headless/likes/dist/style.css'],
+    packageName: '@openstad-headless/likes',
+    directory: 'likes',
+    js: ['dist/likes.iife.js'],
+    css: ['dist/style.css'],
     functionName: 'OpenstadHeadlessLikes',
     componentName: 'Likes',
     defaultConfig: {
@@ -30,13 +23,68 @@ module.exports = {
     },
   },
   comments: {
-    js: ['@openstad-headless/comments/dist/comments.iife.js'],
-    css: ['@openstad-headless/comments/dist/style.css'],
+    packageName: '@openstad-headless/comments',
+    directory: 'comments',
+    js: ['dist/comments.iife.js'],
+    css: ['dist/style.css'],
     functionName: 'OpenstadHeadlessComments',
     componentName: 'Comments',
     defaultConfig: {
       resourceId: null,
     },
+  },
+  rawresource: {
+    packageName: '@openstad-headless/raw-resource',
+    directory: 'raw-resource',
+    js: ['dist/raw-resource.iife.js'],
+    css: ['dist/style.css'],
+    functionName: 'OpenstadHeadlessRawResource',
+    componentName: 'RawResource',
+    defaultConfig: {
+      projectId: null,
+    },
+  },
+  resourceoverview: {
+    packageName: '@openstad-headless/resource-overview',
+    directory: 'resource-overview',
+    js: ['dist/resource-overview.iife.js'],
+    css: ['dist/style.css'],
+    functionName: 'OpenstadHeadlessResourceOverview',
+    componentName: 'ResourceOverview',
+    defaultConfig: {
+      projectId: null,
+    },
+  },
+  resourcedetail: {
+    packageName: '@openstad-headless/resource-detail',
+    directory: 'resource-detail',
+    js: ['dist/resource-detail.iife.js'],
+    css: ['dist/style.css'],
+    functionName: 'OpenstadHeadlessResourceDetail',
+    componentName: 'ResourceDetail',
+    defaultConfig: {
+      projectId: null,
+    },
+  },
+  datecountdownbar: {
+    packageName: '@openstad-headless/date-countdown-bar',
+    directory: 'date-countdown-bar',
+    js: ['dist/date-countdown-bar.iife.js'],
+    css: ['dist/style.css'],
+    functionName: 'OpenstadHeadlessDateCountdownBar',
+    componentName: 'DateCountdownBar',
+    defaultConfig: {
+      projectId: null,
+    },
+  },
+  counter: {
+    js: ['@openstad-headless/counter/dist/counter.iife.js'],
+    css: ['@openstad-headless/counter/dist/style.css'],
+    functionName: 'OpenstadHeadlessCounter',
+    componentName: 'Counter',
+    defaultConfig: {
+      projectId: null
+    }
   },
   choiceguide: {
     js: ['@openstad-headless/choice-guide/dist/choice-guide.iife.js'],

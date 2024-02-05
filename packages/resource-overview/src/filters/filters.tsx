@@ -1,60 +1,55 @@
-import {
-  Input,
-  MultiSelect,
-  SecondaryButton,
-  Select,
-} from '@openstad-headless/ui/src';
+import { Input, SecondaryButton, Select } from '@openstad-headless/ui/src';
 import React, { useState, useEffect, useRef, createRef } from 'react';
-import DataStore from '../../../components/src/data-store';
-import { BaseProps } from '../../../types/base-props';
+import DataStore from '@openstad-headless/data-store/src';
 import { useDebounce } from 'rooks';
 import { MultiSelectTagFilter } from './multiselect-tag-filter';
 import { SelectTagFilter } from './select-tag-filter';
+import { ResourceOverviewWidgetProps } from '../resource-overview';
 
-//Todo correctly type resources. Will be possible when the datastore is correctly typed
 
 type Filter = {
-  tags: {};
-  search: {
-    text: string;
-  };
+  tags: Array<number>;
+  search: { text: string };
   sort: string;
+  page: number;
+  pageSize: number;
 };
 
 type Props = {
   resources: any;
-  dataStore: DataStore;
-  tagTypes?: Array<{ type: string; placeholder?: string; multiple?: boolean }>;
   onUpdateFilter?: (filter: Filter) => void;
-} & BaseProps;
+  tagsLimitation?: number[];
+} & ResourceOverviewWidgetProps;
 
 export function Filters({
   resources,
-  dataStore,
-  tagTypes = [
-    { type: 'theme', placeholder: 'Selecteer een thema', multiple: true },
-    { type: 'area', placeholder: 'Selecteer een gebied' },
-  ],
-  sortOptions = [
-    { value: 'title', label: 'Titel' },
-    { value: 'createdAt_desc', label: 'Nieuwste eerst' },
-    { value: 'createdAt_asc', label: 'Oudste eerst' },
-  ],
+  sorting = [],
+  tagGroups = [],
   onUpdateFilter,
+  tagsLimitation = [],
   ...props
 }: Props) {
-
-  const defaultFilter = { tags: {}, search: { text: '' } };
-  tagTypes.forEach((tagType) => {
-    defaultFilter.tags[tagType.type] = null;
+  const dataStore = new DataStore({
+    projectId: props.projectId,
+    api: props.api,
   });
 
-  const [filter, setFilter] = useState(defaultFilter);
-  const [selectedOptions, setSelected] = useState<{}>({});
+  const defaultFilter: Filter = {
+    tags: [],
+    search: { text: '' },
+    sort: props.defaultSorting || 'createdAt_desc',
+    page: 0,
+    pageSize: props.itemsPerPage || 20,
+  };
+
+  const [tagState, setTagState] = useState<{ [key: string]: Array<number> }>();
+  const [filter, setFilter] = useState<Filter>(defaultFilter);
+  const [selectedOptions, setSelected] = useState<{ [key: string]: any }>({});
 
   // Standard and dynamic refs used for resetting
   const searchRef = useRef<HTMLInputElement>(null);
   const sortingRef = useRef<HTMLSelectElement>(null);
+  const search = useDebounce(setSearch, 300);
 
   // These dynamic refs are only applicable on single item selects <select>
   // The multiselect is a controlled custom component and is managed by the this component
@@ -65,30 +60,33 @@ export function Filters({
   useEffect(() => {
     // add or remove refs
     setElRefs((elRefs) =>
-      Array(tagTypes.length)
+      Array(tagGroups.length)
         .fill(undefined)
         .map((_, i) => elRefs[i] || createRef<HTMLSelectElement>())
     );
-  }, [tagTypes]);
+  }, [tagGroups]);
+
+  useEffect(() => {
+    if (sortingRef.current && props.defaultSorting) {
+      const index = sorting.findIndex((s) => s.value === props.defaultSorting);
+      if (index > -1) {
+        // + 1 for the placeholder option
+        sortingRef.current.selectedIndex = index + 1;
+      }
+    }
+  }, []);
+
 
   function updateFilter(newFilter: Filter) {
     setFilter(newFilter);
     onUpdateFilter && onUpdateFilter(newFilter);
   }
 
-  function setTags(type, values) {
-    updateFilter({
-      ...filter,
-      tags: {
-        ...filter.tags,
-        [type]: values,
-      },
-    });
+  function setTags(type: string, values: any[]) {
+    setTagState({ ...tagState, [type]: values });
   }
 
-  const search = useDebounce(setSearch, 300);
-
-  function setSearch(value) {
+  function setSearch(value: string) {
     updateFilter({
       ...filter,
       search: {
@@ -97,83 +95,105 @@ export function Filters({
     });
   }
 
-  function setSort(value) {
+  function setSort(value: string) {
     updateFilter({
       ...filter,
       sort: value,
     });
   }
 
-  const updateTagList = (tagType: string, updatedTag: string) => {
+  const updateTagListMultiple = (tagType: string, updatedTag: string) => {
     const existingTags = selectedOptions[tagType];
     let selected = [...(existingTags || [])];
 
-    if (updatedTag === '') {
-      // Only a regular select kan return a "".
-      // Remove the selection from the list
-      selected = [];
+    if (selected.includes(updatedTag)) {
+      selected = selected.filter((o) => o != updatedTag);
     } else {
-      if (selected.includes(updatedTag)) {
-        selected = selected.filter((o) => o != updatedTag);
-      } else {
-        selected.push(updatedTag);
-      }
+      selected.push(updatedTag);
     }
 
     setSelected({ ...selectedOptions, [tagType]: selected });
     setTags(tagType, selected);
   };
 
+  const updateTagListSingle = (tagType: string, updatedTag: string) => {
+    const existingTags = selectedOptions[tagType];
+    let selected = [...(existingTags || [])];
+
+    if (updatedTag === '') {
+      selected = [];
+    } else {
+      selected = [updatedTag];
+    }
+    setSelected({ ...selectedOptions, [tagType]: selected });
+    setTags(tagType, selected);
+  };
+
+  useEffect(() => {
+    if (tagState) {
+      const tags = Object.values(tagState).flat();
+      updateFilter({
+        ...filter,
+        tags,
+      });
+    }
+  }, [tagState]);
+
   return (
     <section>
       <div className="osc-resource-overview-filters">
-        <Input
-          ref={searchRef}
-          onChange={(e) => search(e.target.value)}
-          className="osc-resource-overview-search"
-          placeholder="Zoeken"
-        />
+        {props.displaySearch ? (
+          <Input
+            ref={searchRef}
+            onChange={(e) => search(e.target.value)}
+            className="osc-resource-overview-search"
+            placeholder="Zoeken"
+          />
+        ) : null}
 
-        {tagTypes.map((tagType, index) => {
-          if (tagType.multiple) {
-            return (
-              <MultiSelectTagFilter
-                key={`tag-select-${tagType.type}`}
-                {...props}
-                selected={selectedOptions[tagType.type] || []}
-                dataStore={dataStore}
-                tagType={tagType.type}
-                placeholder={tagType.placeholder}
-                onUpdateFilter={(updatedTag) =>
-                  updateTagList(tagType.type, updatedTag)
-                }
-              />
-            );
-          } else {
-            return (
-              <SelectTagFilter
-                ref={elRefs[index]}
-                key={`tag-select-${tagType.type}`}
-                {...props}
-                dataStore={dataStore}
-                tagType={tagType.type}
-                placeholder={tagType.placeholder}
-                onUpdateFilter={(updatedTag) =>
-                  updateTagList(tagType.type, updatedTag)
-                }
-              />
-            );
-          }
-        })}
+        {props.displayTagFilters ? (
+          <>
+            {tagGroups.map((tagGroup, index) => {
+              if (tagGroup.multiple) {
+                return (
+                  <MultiSelectTagFilter
+                    key={`tag-select-${tagGroup.type}`}
+                    {...props}
+                    selected={selectedOptions[tagGroup.type] || []}
+                    dataStore={dataStore}
+                    tagType={tagGroup.type}
+                    placeholder={tagGroup.label}
+                    onUpdateFilter={(updatedTag) =>
+                      updateTagListMultiple(tagGroup.type, updatedTag)
+                    }
+                    onlyIncludeIds={tagsLimitation}
+                  />
+                );
+              } else {
+                return (
+                  <SelectTagFilter
+                    ref={elRefs[index]}
+                    key={`tag-select-${tagGroup}`}
+                    {...props}
+                    dataStore={dataStore}
+                    tagType={tagGroup.type}
+                    placeholder={tagGroup.label}
+                    onUpdateFilter={(updatedTag) =>
+                      updateTagListSingle(tagGroup.type, updatedTag)
+                    }
+                    onlyIncludeIds={tagsLimitation}
+                  />
+                );
+              }
+            })}
+          </>
+        ) : null}
 
-        <Select
-          ref={sortingRef}
-          onValueChange={setSort}
-          options={
-            sortOptions
-          }>
-          <option value={''}>Sorteer op</option>
-        </Select>
+        {props.displaySorting ? (
+          <Select ref={sortingRef} onValueChange={setSort} options={sorting}>
+            <option value={''}>Sorteer op</option>
+          </Select>
+        ) : null}
 
         <SecondaryButton
           onClick={() => {
@@ -197,6 +217,6 @@ export function Filters({
           Wis alles
         </SecondaryButton>
       </div>
-    </section >
+    </section>
   );
 }

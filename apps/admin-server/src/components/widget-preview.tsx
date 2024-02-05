@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
-import { Heading } from '@/components/ui/typography';
 import { Separator } from '@/components/ui/separator';
+import { Heading } from '@/components/ui/typography';
 
 // Can we type config better? Or should we define types for all widgetConfigs and use them as seperate props. A.k.a. likeConifg?:LikeConfig, argConfig?: ArgConfig
 type Props = {
   type:
+    | 'agenda'
     | 'likes'
     | 'comments'
+    | 'rawresource'
     | 'resourceoverview'
+    | 'resourcedetail'
     | 'resourceform'
     | 'begrootmodule'
     | 'resourcesmap'
     | 'map'
-    | 'choiceguide';
+    | 'choiceguide'
+    | 'counter'
+    | 'datecountdownbar'
   config?: any;
   projectId: string;
 };
@@ -28,14 +33,11 @@ export default function WidgetPreview({ type, config, projectId }: Props) {
   config['logout'] = {
     url: `/api/auth/project/${projectId}/logout?useAuth=default&redirectUri=[[REDIRECT_URI]]`,
   };
+  const randomId = Math.floor(Math.random() * 1000000);
 
-  useEffect(() => {
-    fetchWidget();
-  }, [config]);
-
-  function fetchWidget() {
+  const fetchWidget = useCallback(() => {
     const previewContainer = document.querySelector(
-      '#widget-preview-script-holder'
+      `#widget-preview-script-holder-${randomId}`
     );
 
     if (previewContainer && projectId && config) {
@@ -57,7 +59,6 @@ export default function WidgetPreview({ type, config, projectId }: Props) {
               }
 
               if (React) {
-                const randomId = Math.floor(Math.random() * 1000000);
                 const sc = document.createElement('script');
                 sc.setAttribute('type', 'text/javascript');
                 sc.setAttribute('id', `openstad-widget-script-${randomId}`);
@@ -70,7 +71,11 @@ export default function WidgetPreview({ type, config, projectId }: Props) {
         })
         .catch((e) => console.error(e));
     }
-  }
+  }, [config, projectId, type, randomId]);
+
+  useEffect(() => {
+    fetchWidget();
+  }, [fetchWidget]);
 
   return (
     <div id="widget-preview-container" className="p-6 bg-white rounded-md">
@@ -78,7 +83,7 @@ export default function WidgetPreview({ type, config, projectId }: Props) {
         Preview
       </Heading>
       <Separator className="mb-4" />
-      <div id="widget-preview-script-holder"></div>
+      <div id={`widget-preview-script-holder-${randomId}`}></div>
     </div>
   );
 }

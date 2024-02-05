@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-import loadWidget from '../../lib/load-widget';
+import { loadWidget } from '../../lib/load-widget';
 
 import { BaseProps } from '../../types/base-props';
 import {

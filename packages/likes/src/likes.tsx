@@ -1,13 +1,13 @@
 import 'remixicon/fonts/remixicon.css';
 import { ProgressBar } from '@openstad-headless/ui/src';
 import { SessionStorage } from '@openstad-headless/lib/session-storage';
-import loadWidget from '@openstad-headless/lib/load-widget';
-import { hasRole } from '@openstad-headless/lib/has-role';
+import { loadWidget } from '@openstad-headless/lib/load-widget';
+import { hasRole } from '@openstad-headless/lib';
 import DataStore from '@openstad-headless/data-store/src';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './likes.css';
-import { BaseProps } from '../../types/base-props';
-import { ProjectSettingProps } from '../../types/project-setting-props';
+import type { BaseProps } from '../../types/base-props.js';
+import type { ProjectSettingProps } from '../../types/project-setting-props.js';
 
 export type LikeWidgetProps = BaseProps &
   LikeProps &
@@ -32,16 +32,18 @@ function Likes({
   ...props
 }: LikeWidgetProps) {
   const urlParams = new URLSearchParams(window.location.search);
-  const resourceId = urlParams.get('openstadResourceId') || props.resourceId;
-  const necessaryVotes = props?.resources?.minimumYesVotes || 50;
+  const resourceId =
+    urlParams.get('openstadResourceId') || props.resourceId || '';
+  const necessaryVotes = props.resources.minimumYesVotes || 50;
 
   // Pass explicitely because datastore is not ts, we will not get a hint if the props have changed
-  const datastore = new DataStore({
+
+  const datastore: any = new DataStore({
     projectId: props.projectId,
-    config: { api: props.api },
+    api: props.api,
   });
 
-  const session = new SessionStorage(props);
+  const session = new SessionStorage({ projectId: props.projectId });
 
   const [currentUser] = datastore.useCurrentUser(props);
   console.log(resourceId)
@@ -49,17 +51,31 @@ function Likes({
     projectId: props.projectId,
     resourceId,
   });
+
   const [isBusy, setIsBusy] = useState(false);
   const supportedLikeTypes: Array<{
     type: 'yes' | 'no';
     label: string;
     icon: string;
   }> = [
-      { type: 'yes', label: yesLabel, icon: 'ri-thumb-up-line' },
-      { type: 'no', label: noLabel, icon: 'ri-thumb-down-line' },
-    ];
+    { type: 'yes', label: yesLabel, icon: 'ri-thumb-up-line' },
+    { type: 'no', label: noLabel, icon: 'ri-thumb-down-line' },
+  ];
 
-  async function doVote(e, value) {
+  useEffect(() => {
+    let pending = session.get('osc-resource-vote-pending');
+    if (pending && pending[resource.id]) {
+      if (currentUser && currentUser.role) {
+        doVote(null, pending[resource.id]);
+        session.remove('osc-resource-vote-pending');
+      }
+    }
+  }, [resource, currentUser]);
+
+  async function doVote(
+    e: React.MouseEvent<HTMLElement, MouseEvent> | null,
+    value: string
+  ) {
     if (e) e.stopPropagation();
 
     if (isBusy) return;
@@ -79,7 +95,7 @@ function Likes({
       return (document.location.href = props?.login?.url);
     }
 
-    let change = {};
+    let change: { [key: string]: any } = {};
     if (resource.userVote) change[resource.userVote.opinion] = -1;
 
     await resource.submitLike({
@@ -88,7 +104,7 @@ function Likes({
 
     setIsBusy(false);
   }
-
+  
   return (
     <div className="osc">
       <div className={`like-widget-container ${variant}`}>
@@ -98,8 +114,11 @@ function Likes({
           {supportedLikeTypes.map((likeVariant, index) => (
             <div
               key={`${likeVariant.type}-${index}`}
-              className={`like-option  ${hideCounters ? 'osc-no-counter' : ''
-                }`}>
+              className={`like-option ${
+                resource?.userVote?.opinion === likeVariant.type
+                  ? 'selected'
+                  : ''
+              } ${hideCounters ? 'osc-no-counter' : ''}`}>
               <section
                 className="like-kind"
                 onClick={(e) => doVote(e, likeVariant.type)}>
@@ -115,10 +134,10 @@ function Likes({
                 <section className="like-counter">
                   <p>
                     {resource[likeVariant.type] &&
-                      resource[likeVariant.type] < 10
+                    resource[likeVariant.type] < 10
                       ? resource[likeVariant.type].toString().padStart(2, '0')
                       : resource[likeVariant.type] ||
-                      (0).toString().padStart(2, '0')}
+                        (0).toString().padStart(2, '0')}
                   </p>
                 </section>
               ) : null}

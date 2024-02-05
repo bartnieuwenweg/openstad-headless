@@ -12,8 +12,8 @@ import { Heading } from '@/components/ui/typography';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { CommentsWidgetProps } from '@openstad/comments/src/comments';
-import { EditFieldProps } from '@/lib/EditFieldProps';
+import { CommentsWidgetProps } from '@openstad-headless/comments/src/comments';
+import { EditFieldProps } from '@/lib/form-widget-helpers/EditFieldProps';
 import { useFieldDebounce } from '@/hooks/useFieldDebounce';
 
 const formSchema = z.object({

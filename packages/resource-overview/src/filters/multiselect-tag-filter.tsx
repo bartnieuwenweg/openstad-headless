@@ -1,29 +1,33 @@
-import { MultiSelect, Select } from '@openstad-headless/ui/src';
-import React, { useState, forwardRef } from 'react';
-import DataStore from '../../../components/src/data-store';
-import { BaseConfig } from '../../../generic-widget-types';
+import { MultiSelect } from '@openstad-headless/ui/src';
+import React from 'react';
+import DataStore from '@openstad-headless/data-store/src';
 
 //Todo correctly type resources. Will be possible when the datastore is correctly typed
 
 type Props = {
-  dataStore: DataStore;
+  dataStore: typeof DataStore;
   tagType: string;
   placeholder?: string;
-  selected?: string[];
+  selected?: number[];
   onUpdateFilter?: (filter: string) => void;
-} & BaseConfig;
+  onlyIncludeIds?: number[];
+};
+
+type TagDefinition = { id: number; name: string };
 
 const MultiSelectTagFilter = ({
   dataStore,
   tagType,
   onUpdateFilter,
   selected = [],
+  onlyIncludeIds = [],
   ...props
 }: Props) => {
   // The useTags function should not need the  config and such anymore, because it should get that from the datastore object. Perhaps a rewrite of the hooks is needed
   const [tags] = dataStore.useTags({
     ...props,
     type: tagType,
+    onlyIncludeIds,
   });
 
   return (
@@ -32,7 +36,7 @@ const MultiSelectTagFilter = ({
       onItemSelected={(value) => {
         onUpdateFilter && onUpdateFilter(value);
       }}
-      options={(tags || []).map((tag) => ({
+      options={(tags || []).map((tag: TagDefinition) => ({
         value: tag.id,
         label: tag.name,
         checked: selected.includes(tag.id),

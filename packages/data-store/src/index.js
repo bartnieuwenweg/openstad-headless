@@ -1,5 +1,4 @@
 import mergeData from './merge-data';
-import { useEffect } from 'react';
 import { useSWRConfig } from 'swr';
 import useSWR from 'swr';
 import API from './api';
@@ -9,15 +8,18 @@ import useResources from './hooks/use-resources.js';
 import useTags from './hooks/use-tags.js';
 import useCurrentUser from './hooks/use-current-user.js';
 import useUserVote from './hooks/use-user-vote.js';
+import useSubmissions from './hooks/use-submissions';
+import useCommentsByProject from './hooks/use-comments-by-project';
+import useChoiceGuideResults from './hooks/use-choiceguide-results';
 
 const windowGlobal = typeof window !== 'undefined' ? window : {};
 
 windowGlobal.OpenStadSWR = windowGlobal.OpenStadSWR || {}; // keys used, for forced updates
 
-function DataStore(props = { config: {} }) {
+function DataStore(props = {}) {
   let self = this;
   self.api = new API(props);
-  self.projectId = props.projectId || props.config?.projectId;
+  self.projectId = props.projectId;
 
   // hooks
   self.useResource = useResource.bind(self);
@@ -26,6 +28,9 @@ function DataStore(props = { config: {} }) {
   self.useTags = useTags.bind(self);
   self.useCurrentUser = useCurrentUser.bind(self);
   self.useUserVote = useUserVote.bind(self);
+  self.useSubmissions = useSubmissions.bind(self);
+  self.useCommentsByProject = useCommentsByProject.bind(self);
+  self.useChoiceGuideResults = useChoiceGuideResults.bind(self);
 
   // current user
   const [currentUser, currentUserError, currentUserIsLoading] =
@@ -67,7 +72,8 @@ function DataStore(props = { config: {} }) {
       defaultOptions.populateCache = (newData, currentData) =>
         mergeData(currentData, newData, options.action);
     }
-    if (newData.parentId) {
+
+    if (newData?.parentId) {
       // currently for comments: replies are subobjects and SWR can't handle that
       defaultOptions.revalidate = true;
     }

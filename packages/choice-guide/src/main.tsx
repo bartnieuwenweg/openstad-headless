@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { ChoiceGuide } from './choice-guide'
+import { ChoiceGuideProps, ChoiceGuide } from './choice-guide'
+
+
 const config = {
   api: {
     url: import.meta.env.VITE_API_URL,

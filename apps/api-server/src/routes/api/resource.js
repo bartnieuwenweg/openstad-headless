@@ -9,6 +9,7 @@ const mail = require('../../lib/mail');
 const pagination = require('../../middleware/pagination');
 const searchInResults = require('../../middleware/search-in-results');
 const c = require('config');
+const { Op } = require("sequelize");
 
 const router = express.Router({ mergeParams: true });
 const userhasModeratorRights = (user) => {
@@ -61,10 +62,6 @@ router.all('*', function (req, res, next) {
     userhasModeratorRights(req.user)
   ) {
     req.canIncludeVoteCount = true; // scope.push(undefined) would be easier but creates an error
-  }
-
-  if (req.query.mapMarkers) {
-    req.scope.push('mapMarkers');
   }
 
   if (req.query.running) {
@@ -120,6 +117,7 @@ router
       projectId: req.params.projectId,
       ...req.queryConditions,
       ...dbQuery.where,
+      deletedAt: null      
     };
 
     if (dbQuery.hasOwnProperty('order')) {
