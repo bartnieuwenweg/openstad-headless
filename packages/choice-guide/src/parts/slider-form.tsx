@@ -1,9 +1,15 @@
 import { Slider, Spacer } from '@openstad-headless/ui/src'
-import React from 'react'
+import React, { useEffect } from 'react'
 import '../choice-guide.css';
 
-export default function SliderForm({choice} : {choice:any}) {
+
+
+export default function SliderForm({onChoiceChanged, choice} : {onChoiceChanged:(nr: number) => void, choice:any}) {
   const [value, setValue] = React.useState(50)
+
+  useEffect(() => {
+    onChoiceChanged && onChoiceChanged(value);
+  },[value])
   
   return (
     <div className="choice-guide-resource-container">

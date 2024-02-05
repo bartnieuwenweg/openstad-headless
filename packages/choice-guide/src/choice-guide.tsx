@@ -5,6 +5,7 @@ import { loadWidget } from '../../lib/load-widget';
 import { BaseProps } from '../../types/base-props';
 import {
   Input,
+  ProgressBar,
   SecondaryButton,
   Spacer,
   Textarea
@@ -46,6 +47,12 @@ function ChoiceGuide({
     projectId: props.projectId,
     resourceId,
   });
+
+  const [choiceResults, setChoiceResults] = React.useState({})
+  
+  function updateChoiceResults(results: any) {
+    setChoiceResults(results)
+  }
 
   let choiceGuide = props?.choiceGuide || [
     {
@@ -89,9 +96,22 @@ function ChoiceGuide({
               <Spacer size={2}/>
             </>
             <div>
-              {choiceGuide?.map((choice) => (
-                <SliderForm choice={choice} />
+              {choiceGuide?.map((choice, index) => (
+                <SliderForm choice={choice} onChoiceChanged={(nr) =>{
+                  updateChoiceResults({index, nr})
+                }} />
               ))}
+            </div>
+            <div className="choice-guide-resource-container">
+              <h5>Hier komen de gewenste waarden.</h5>
+              <ProgressBar progress={50} />
+              <p className="progressbar-counter">
+                50
+              </p>
+              <ProgressBar progress={80} />
+              <p className="progressbar-counter">
+                80
+              </p>
             </div>
             <div className="choice-guide-resource-footer">
               <SecondaryButton
