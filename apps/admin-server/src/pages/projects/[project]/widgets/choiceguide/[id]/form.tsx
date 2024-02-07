@@ -22,7 +22,7 @@ import * as z from 'zod';
 import { Heading } from '@/components/ui/typography';
 import { Separator } from '@/components/ui/separator';
 import { useWidgetConfig } from '@/hooks/use-widget-config';
-import { EditFieldProps } from '@/lib/EditFieldProps';
+import { EditFieldProps } from '@/lib/form-widget-helpers/EditFieldProps';
 import { ChoiceGuideProps } from '@openstad/choice-guide/src/choice-guide';
 import { useFieldDebounce } from '@/hooks/useFieldDebounce';
 

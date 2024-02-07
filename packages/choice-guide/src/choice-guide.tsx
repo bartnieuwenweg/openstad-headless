@@ -75,6 +75,11 @@ function ChoiceGuide({
     resourceId,
   });
 
+  const [choiceGuides] = datastore.useChoiceGuides({
+    projectId: props.projectId,
+    choiceGuideId: 1
+  })
+
   const [choiceResults, setChoiceResults] = React.useState();
   const [bar, setBar] = React.useState(50);
   const [lengthConfirmation, setLengthConfirmation] = React.useState(false);
@@ -134,11 +139,11 @@ function ChoiceGuide({
               <h5>Hier komen de gewenste waarden.</h5>
               <ProgressBar progress={bar} />
               <p className="progressbar-counter">
-                {bar}
+                {bar}%
               </p>
-              <ProgressBar progress={80} />
+              <ProgressBar progress={100 - bar} />
               <p className="progressbar-counter">
-                80
+                {100 - bar}%
               </p>
             </div>
             <div className="choice-guide-resource-footer">
@@ -153,10 +158,21 @@ function ChoiceGuide({
         {currentStep === 1 ? (
           <>
             <h5>Jouw resultaten</h5>
-              <p>
-                Bedankt voor het invullen!
+            <p>
+              Bedankt voor het invullen!
+            </p>
+            <Spacer size={2}/>
+            <div className="choice-guide-resource-container">
+              <h5>Hier zijn de resultaten.</h5>
+              <ProgressBar progress={bar} />
+              <p className="progressbar-counter">
+                {bar}%
               </p>
-              <Spacer size={2}/>
+              <ProgressBar progress={100 - bar} />
+              <p className="progressbar-counter">
+                {100 - bar}%
+              </p>
+            </div>
             <section className="choice-guide-resource-container">
               <h5>Gegevens</h5>
               <p>
@@ -188,7 +204,7 @@ function ChoiceGuide({
             </section>
             <div className="choice-guide-resource-footer">
               <PlainButton onClick={() => setCurrentStep(currentStep - 1)}>
-                Vorige
+                Overnieuw
               </PlainButton>
               <SecondaryButton 
               className="choice-guide-send-button"

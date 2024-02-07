@@ -11,6 +11,7 @@ import useUserVote from './hooks/use-user-vote.js';
 import useSubmissions from './hooks/use-submissions';
 import useCommentsByProject from './hooks/use-comments-by-project';
 import useChoiceGuideResults from './hooks/use-choiceguide-results';
+import useChoiceGuides from './hooks/use-choiceguide';
 
 const windowGlobal = typeof window !== 'undefined' ? window : {};
 
@@ -31,6 +32,7 @@ function DataStore(props = {}) {
   self.useSubmissions = useSubmissions.bind(self);
   self.useCommentsByProject = useCommentsByProject.bind(self);
   self.useChoiceGuideResults = useChoiceGuideResults.bind(self);
+  self.useChoiceGuides = useChoiceGuides.bind(self);
 
   // current user
   const [currentUser, currentUserError, currentUserIsLoading] =
