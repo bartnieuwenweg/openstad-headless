@@ -35,25 +35,6 @@ function ChoiceGuide({
   const resourceId = urlParams.get('openstadResourceId') || props.resourceId || 3;
   const [currentStep, setCurrentStep] = useState<number>(0);
 
-  const datastore: any = new DataStore({
-    projectId: props.projectId,
-    api: props.api,
-  });
-
-  const session = new SessionStorage(props);
-
-  const [currentUser] = datastore.useCurrentUser(props);
-  const [resource] = datastore.useResource({
-    projectId: props.projectId,
-    resourceId,
-  });
-
-  const [choiceResults, setChoiceResults] = React.useState({})
-  
-  function updateChoiceResults(results: any) {
-    setChoiceResults(results)
-  }
-
   let choiceGuide = props?.choiceGuide || [
     {
       type: "a-to-b",
@@ -81,6 +62,53 @@ function ChoiceGuide({
     }
   ]
 
+  const datastore: any = new DataStore({
+    projectId: props.projectId,
+    api: props.api,
+  });
+
+  const session = new SessionStorage(props);
+
+  const [currentUser] = datastore.useCurrentUser(props);
+  const [resource] = datastore.useResource({
+    projectId: props.projectId,
+    resourceId,
+  });
+
+  const [choiceResults, setChoiceResults] = React.useState();
+  const [bar, setBar] = React.useState(50);
+  const [lengthConfirmation, setLengthConfirmation] = React.useState(false);
+
+  function calculateTotal() {
+    if (choiceResults != undefined) {
+      let total = 0;
+      let maximum = choiceResults.length * 100;
+      for (let i = 0; i < choiceResults.length; i++) {
+        total = total + choiceResults[i].amount
+      }
+      setBar(Math.floor(total / maximum * 100))
+    }
+  }
+  
+  function updateChoiceResults(results: any) {
+    if (lengthConfirmation) {
+      let data = choiceResults;
+
+      let objIndex = data.findIndex((obj => obj.index == results.index))
+      data[objIndex].amount = results.amount;
+
+      setChoiceResults(data)
+    } else {
+      let data = [];
+      for(let i = 0; i < choiceGuide.length; i++) {
+        data.push({index: i, amount: 50})
+      }
+      setChoiceResults(data)
+      setLengthConfirmation(true)
+    }
+    calculateTotal();
+  }
+
   return (
     <>
       <div className="osc">
@@ -97,16 +125,16 @@ function ChoiceGuide({
             </>
             <div>
               {choiceGuide?.map((choice, index) => (
-                <SliderForm choice={choice} onChoiceChanged={(nr) =>{
-                  updateChoiceResults({index, nr})
+                <SliderForm choice={choice} onChoiceChanged={(amount) =>{
+                  updateChoiceResults({index, amount})
                 }} />
               ))}
             </div>
             <div className="choice-guide-resource-container">
               <h5>Hier komen de gewenste waarden.</h5>
-              <ProgressBar progress={50} />
+              <ProgressBar progress={bar} />
               <p className="progressbar-counter">
-                50
+                {bar}
               </p>
               <ProgressBar progress={80} />
               <p className="progressbar-counter">
