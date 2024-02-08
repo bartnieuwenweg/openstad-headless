@@ -44,16 +44,17 @@ router.route('/$')
       .scope(...req.scope)
       .findAll({ where })
       .then( (found) => {
-        return found.map( (entry) => {
-          let json = {
-            id: entry.id,
-            projectId: entry.projectId,
-            title: entry.title,
-            description: entry.description,
-            images: entry.images,
-          };
-          return json;
-        });
+        return found;
+        // return found.map( (entry) => {
+        //   let json = {
+        //     id: entry.id,
+        //     projectId: entry.projectId,
+        //     title: entry.title,
+        //     description: entry.description,
+        //     images: entry.images,
+        //   };
+        //   return json;
+        // });
       })
       .then(function( found ) {
         res.json(found);

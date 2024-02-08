@@ -531,7 +531,7 @@ module.exports = async function seed(config, db) {
       images: [ { src: `${process.env.IMAGE_APP_URL}/image/zand.01.jpg` } ],
       type: 'a-to-b',
       dimensions: '["x"]',
-      values: `{ "A": { "questionImage": [ "${process.env.IMAGE_APP_URL}/image/forum.romanum.04.jpg" ], "questionText": "Ik vind dat de gemeente verantwoordelijk is voor het verduurzamen van Amsterdam. ", "label": "AA", "labelAbove": "AAAA", "labelBelow": "Weinig" }, "B": { "questionImage": [ "https://image.openstad.amsterdam.nl/image/2bf220c6ff23dd524c78a49eb68aa7cb" ], "questionText": "De Amsterdammers moeten zelf kunnen bepalen hoe we samen een duurzame en gezonde stad worden. De gemeente moet het mogelijk maken.", "label": "BB", "labelBbove": "B", "labelBelow": "Veel", "labelAbove": "BBBB" } }`,
+      values: `{ "A": { "questionImage": [ "${process.env.IMAGE_APP_URL}/image/forum.romanum.04.jpg" ], "questionText": "Ik vind dat de gemeente verantwoordelijk is voor het verduurzamen van Amsterdam. ", "label": "AA", "labelAbove": "AAAA", "labelBelow": "Weinig" }, "B": { "questionImage": [ "https://image.openstad.amsterdam.nl/image/2bf220c6ff23dd524c78a49eb68aa7cb" ], "questionText": "De Amsterdammers moeten zelf kunnen bepalen hoe we samen een duurzame en gezonde stad worden. De gemeente moet het mogelijk maken.", "label": "BB", "labelBelow": "Veel", "labelAbove": "BBBB" } }`,
       seqnr: 20,
     });
 

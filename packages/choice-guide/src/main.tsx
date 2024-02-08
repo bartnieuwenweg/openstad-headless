@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import { ChoiceGuideProps, ChoiceGuide } from './choice-guide'
 
 const config: ChoiceGuideProps = {
-  title: 'Title',
   choiceGuide: [
     {
       vraag: "1. Wat vind je belangrijker?",
@@ -26,7 +25,7 @@ const config: ChoiceGuideProps = {
       optie2: "Dat er genoeg bankjes zijn in de straat.",
       optie2Beschrijving: "Het kiezen voor (ruimte voor) bankjes op de kade gaat ten koste van extra ruimte voor plantenbakken."
     }
-  ]
+  ],
 }
 
 

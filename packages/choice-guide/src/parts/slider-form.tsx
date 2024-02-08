@@ -4,7 +4,7 @@ import '../choice-guide.css';
 
 
 
-export default function SliderForm({onChoiceChanged, choice} : {onChoiceChanged:(nr: number) => void, choice:any}) {
+export default function SliderForm({onChoiceChanged, choice, titlePreference, titleNoPreference} : {onChoiceChanged:(nr: number) => void, choice:any, titlePreference: string, titleNoPreference: string}) {
   const [value, setValue] = React.useState(50)
 
   useEffect(() => {
@@ -19,9 +19,9 @@ export default function SliderForm({onChoiceChanged, choice} : {onChoiceChanged:
       <p className="choice-guide-text">{choice.optie1Beschrijving}</p>
       <h6>B. {choice.optie2}</h6>
       <p className="choice-guide-text">{choice.optie2Beschrijving}</p>
-      {value < 50 ? <p>Je voorkeur gaat naar '{choice.optie1}'</p> : null}
-      {value === 50 ? <p>Je hebt nog geen voorkeur doorgegeven.</p> : null}
-      {value > 50 ? <p>Je voorkeur gaat naar '{choice.optie2}'</p> : null}
+      {value < 50 ? <p>{titlePreference} {choice.optie1}</p> : null}
+      {value === 50 ? <p>{titleNoPreference}</p> : null}
+      {value > 50 ? <p>{titlePreference} {choice.optie2}</p> : null}
       <Slider onValueChange={setValue}/>
     </div>
   )

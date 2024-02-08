@@ -18,7 +18,6 @@ import ChoiceGuideForm from './form';
 
 export const getServerSideProps = withApiUrl
 
-
 export default function WidgetKeuzewijzer({
   apiUrl
 }: WithApiUrlProps) {
@@ -29,7 +28,7 @@ export default function WidgetKeuzewijzer({
   const { data: widget, updateConfig } = useWidgetConfig();
   const { previewConfig, updatePreview } = useWidgetPreview<ChoiceGuideWidgetProps>({
     projectId,
-    resourceId: '3',
+    resourceId: '2',
     api: {
       url: '/api/openstad',
     },

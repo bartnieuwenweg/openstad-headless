@@ -24,11 +24,18 @@ ProjectSettingProps & {
 }
 
 export type ChoiceGuideProps = {
-  title?: string;
   choiceGuide?: object[];
+  titlePreference?: string;
+  titleNoPreference?: string;
+  urlStartPage?: string;
+  urlResultPage?: string;
 }
 
 function ChoiceGuide({
+  titlePreference = 'Jouw voorkeur is:',
+  titleNoPreference = 'Je hebt nog geen keuze gemaakt.',
+  urlStartPage = '',
+  urlResultPage = '',
   ...props
 }: ChoiceGuideWidgetProps) {
   const urlParams = new URLSearchParams(window.location.search);
@@ -130,7 +137,7 @@ function ChoiceGuide({
             </>
             <div>
               {choiceGuide?.map((choice, index) => (
-                <SliderForm choice={choice} onChoiceChanged={(amount) =>{
+                <SliderForm choice={choice} titlePreference={titlePreference} titleNoPreference={titleNoPreference} onChoiceChanged={(amount) =>{
                   updateChoiceResults({index, amount})
                 }} />
               ))}
@@ -229,11 +236,12 @@ function ChoiceGuide({
             </section>
             <div className="choice-guide-resource-footer">
               <PlainButton
-                onClick={() => {}}>
+                onClick={() => document.location.href = urlStartPage}>
                 Terug naar homepage
-              </PlainButton>  
+              </PlainButton>
               <SecondaryButton
                 className="choice-guide-send-button"
+                onClick={() => document.location.href = urlResultPage}
               >
                 Hou mij op de hoogte
               </SecondaryButton>

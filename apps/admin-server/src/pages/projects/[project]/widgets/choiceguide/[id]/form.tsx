@@ -25,6 +25,8 @@ import { useWidgetConfig } from '@/hooks/use-widget-config';
 import { EditFieldProps } from '@/lib/form-widget-helpers/EditFieldProps';
 import { ChoiceGuideProps } from '@openstad/choice-guide/src/choice-guide';
 import { useFieldDebounce } from '@/hooks/useFieldDebounce';
+import { useRouter } from 'next/router';
+import useChoiceGuides from '@/hooks/use-choiceguides';
 
 const formSchema = z.object({
   keuzewijzer: z.string(),
@@ -37,13 +39,17 @@ const formSchema = z.object({
   urlStartPage: z.string().url(),
   urlResultPage: z.string().url(),
 });
+
 type FormData = z.infer<typeof formSchema>
 
-type Props = {}
-
-export default function ChoiceGuideForm(props: Props & EditFieldProps<ChoiceGuideProps>) {
+export default function ChoiceGuideForm(props: ChoiceGuideProps & EditFieldProps<ChoiceGuideProps>) {
   const category = 'selectionGuide';
   const { onFieldChange } = useFieldDebounce(props.onFieldChanged);
+
+  const router = useRouter()
+
+  const projectId = router.query.project as string;
+  const { data } = useChoiceGuides(projectId as string);
 
   const {
     data: widget,
@@ -57,15 +63,15 @@ export default function ChoiceGuideForm(props: Props & EditFieldProps<ChoiceGuid
       preferences: widget?.config?.[category]?.preferences || 'standard',
       display: widget?.config?.[category]?.display || '16:9',
       titlePreference:
-        widget?.config?.[category]?.titlePreference ||
-        'Jouw voorkeur is {preferredChoice}.',
+        props.titlePreference ||
+        'Jouw voorkeur is:',
       titleNoPreference:
-        widget?.config?.[category]?.titleNoPreference ||
+        props.titleNoPreference ||
         'Je hebt nog geen keuze gemaakt.',
       keuzewijzer: widget?.config?.[category]?.keuzewijzer || '',
       startHalfway: widget?.config?.[category]?.startHalfway || '',
-      urlStartPage: widget?.config?.[category]?.urlStartPage || '',
-      urlResultPage: widget?.config?.[category]?.urlResultPage || '',
+      urlStartPage: props.urlStartPage || '',
+      urlResultPage: props.urlResultPage || '',
     }),
     [widget?.config]
   );
@@ -79,8 +85,8 @@ export default function ChoiceGuideForm(props: Props & EditFieldProps<ChoiceGuid
     form.reset(defaults());
   }, [form, defaults]);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    updateConfig({ [category]: values });
+  function onSubmit(values: FormData) {
+    props.updateConfig({...props, ...values });
   }
 
   return (
@@ -95,15 +101,24 @@ export default function ChoiceGuideForm(props: Props & EditFieldProps<ChoiceGuid
             control={form.control}
             name="keuzewijzer"
             render={({ field }) => (
-              <FormItem className="col-span-full">
-                <FormLabel>Kies de keuzewijzer:</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+              <FormItem>
+                <FormLabel>Gewenste keuzewijzer</FormLabel>
+                <Select onValueChange={(e) => {
+                  field.onChange(e);
+                  props.onFieldChanged(field.name, e);
+                }} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue />
+                      <SelectValue placeholder="Selecteer uw gewenste keuzewijzer" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent></SelectContent>
+                  <SelectContent>
+                    {data?.map((result: any) => (
+                      <SelectItem key={result.id} value={`${result.id}`}>
+                        {result.id}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               </FormItem>
             )}
@@ -195,7 +210,13 @@ export default function ChoiceGuideForm(props: Props & EditFieldProps<ChoiceGuid
               <FormItem>
                 <FormLabel>Titel boven de keuzes, met voorkeur:</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                <Input
+                  defaultValue={field.value}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    onFieldChange(field.name, e.target.value);
+                  }}
+                />
                 </FormControl>
               </FormItem>
             )}
@@ -207,7 +228,13 @@ export default function ChoiceGuideForm(props: Props & EditFieldProps<ChoiceGuid
               <FormItem>
                 <FormLabel>Titel boven de keuzes, zonder voorkeur:</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                <Input
+                  defaultValue={field.value}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    onFieldChange(field.name, e.target.value);
+                  }}
+                />
                 </FormControl>
               </FormItem>
             )}
@@ -219,7 +246,13 @@ export default function ChoiceGuideForm(props: Props & EditFieldProps<ChoiceGuid
               <FormItem>
                 <FormLabel>URL van de inleidende pagina:</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                <Input
+                  defaultValue={field.value}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    onFieldChange(field.name, e.target.value);
+                  }}
+                />
                 </FormControl>
               </FormItem>
             )}
@@ -231,7 +264,13 @@ export default function ChoiceGuideForm(props: Props & EditFieldProps<ChoiceGuid
               <FormItem>
                 <FormLabel>URL van de resultaatspagina:</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                <Input
+                  defaultValue={field.value}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    onFieldChange(field.name, e.target.value);
+                  }}
+                />
                 </FormControl>
               </FormItem>
             )}
