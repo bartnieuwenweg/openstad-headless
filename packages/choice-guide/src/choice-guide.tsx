@@ -24,7 +24,9 @@ ProjectSettingProps & {
 }
 
 export type ChoiceGuideProps = {
+  title?: string;
   choiceGuide?: object[];
+  startHalfway?: boolean;
   titlePreference?: string;
   titleNoPreference?: string;
   urlStartPage?: string;
@@ -34,6 +36,7 @@ export type ChoiceGuideProps = {
 function ChoiceGuide({
   titlePreference = 'Jouw voorkeur is:',
   titleNoPreference = 'Je hebt nog geen keuze gemaakt.',
+  startHalfway = true,
   urlStartPage = '',
   urlResultPage = '',
   ...props
@@ -88,7 +91,7 @@ function ChoiceGuide({
   })
 
   const [choiceResults, setChoiceResults] = React.useState();
-  const [bar, setBar] = React.useState(50);
+  const [bar, setBar] = React.useState(startHalfway ? 50 : 0);
   const [lengthConfirmation, setLengthConfirmation] = React.useState(false);
 
   function calculateTotal() {

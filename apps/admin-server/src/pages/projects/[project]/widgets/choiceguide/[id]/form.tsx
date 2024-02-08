@@ -61,6 +61,7 @@ export default function ChoiceGuideForm(props: ChoiceGuideProps & EditFieldProps
     () => ({
       questionsOnPage: widget?.config?.selectionGuide?.questionsOnPage || 100,
       preferences: widget?.config?.[category]?.preferences || 'standard',
+      startHalfway: props.startHalfway || true,
       display: widget?.config?.[category]?.display || '16:9',
       titlePreference:
         props.titlePreference ||
@@ -69,7 +70,6 @@ export default function ChoiceGuideForm(props: ChoiceGuideProps & EditFieldProps
         props.titleNoPreference ||
         'Je hebt nog geen keuze gemaakt.',
       keuzewijzer: widget?.config?.[category]?.keuzewijzer || '',
-      startHalfway: widget?.config?.[category]?.startHalfway || '',
       urlStartPage: props.urlStartPage || '',
       urlResultPage: props.urlResultPage || '',
     }),

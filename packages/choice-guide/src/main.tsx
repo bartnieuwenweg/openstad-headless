@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { ChoiceGuideProps, ChoiceGuide } from './choice-guide'
 
 const config: ChoiceGuideProps = {
+  title: 'Title',
   choiceGuide: [
     {
       vraag: "1. Wat vind je belangrijker?",
